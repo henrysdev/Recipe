@@ -1,14 +1,28 @@
 (ns recipe.user
   (:gen-class)
   (:require [clj-spotify.core :refer :all]
-            [clj-spotify.util :refer :all]))
+            [clj-spotify.util :refer :all]
+            [clj-http.client :as http]))
 
+(defn paginate [accum page-obj acc-tok]
+  (println (:next page-obj))
+  (let [accum (conj accum (:items page-obj))
+        next-page (:next page-obj)]
+    (if (= next-page nil)
+      (accum)
+      (let [resp (http/get next-page {:oauth-token acc-tok 
+                                             :as :json})]
+        (paginate accum (:body resp) acc-tok)))))
+  
 
+(defn get-library [acc-tok]
+  (let [page-obj (get-users-saved-tracks {:limit 1} acc-tok)
+        tracks   (paginate [] page-obj acc-tok)]))
 
 (defn process [user]
-  (clojure.pprint/pprint user))
-;   (println (:access_token  user))
-;   (println (:refresh_token user)))
+  (def acc-tok (:access user))
+  (def ref-tok (:refresh user))
+  (get-library acc-tok))
 
 ; (defn get-track-label [track-id auth-tok]
 ;   (let [track (get-a-track  {:id track-id} auth-tok)
