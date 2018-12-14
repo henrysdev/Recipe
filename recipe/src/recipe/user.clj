@@ -5,8 +5,7 @@
             [clj-http.client :as http]))
 
 (defn paginate [accum page-obj acc-tok]
-  (println (:next page-obj))
-  (let [accum (concat accum (:items page-obj))
+  (let [accum     (concat accum (:items page-obj))
         next-page (:next page-obj)]
     (if (nil? next-page)
       accum
@@ -15,9 +14,11 @@
         (paginate accum (:body resp) acc-tok)))))
 
 (defn get-library [acc-tok]
-  (let [page-obj (get-users-saved-tracks {:limit 50} acc-tok)
-        tracks   (paginate [] page-obj acc-tok)]
-    (map println (map #(:name (:track %1)) (sort-by #(:popularity (:track %1)) tracks)))))
+  (let [page-obj    (get-users-saved-tracks {:limit 50} acc-tok)
+        track-objs  (map #(:track %1) (paginate [] page-obj acc-tok))
+        pop-sorted  (sort-by #(:popularity %1) > track-objs)
+        track-names (map #(:name %1) pop-sorted)]
+    track-names))
 
 (defn process [user]
   (def acc-tok (:access user))
