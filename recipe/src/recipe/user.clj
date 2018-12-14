@@ -8,17 +8,16 @@
   (println (:next page-obj))
   (let [accum (concat accum (:items page-obj))
         next-page (:next page-obj)]
-    (if (= next-page nil)
+    (if (nil? next-page)
       accum
       (let [resp (http/get next-page {:oauth-token acc-tok
                                       :as :json})]
         (paginate accum (:body resp) acc-tok)))))
-  
 
 (defn get-library [acc-tok]
   (let [page-obj (get-users-saved-tracks {:limit 50} acc-tok)
         tracks   (paginate [] page-obj acc-tok)]
-    (println (count tracks))))
+    (map println (map #(:name (:track %1)) (sort-by #(:popularity (:track %1)) tracks)))))
 
 (defn process [user]
   (def acc-tok (:access user))
