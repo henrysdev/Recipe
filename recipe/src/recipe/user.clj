@@ -1,7 +1,7 @@
 (ns recipe.user
   (:gen-class)
-  (:require [clj-spotify.core :refer :all]
-            [clj-spotify.util :refer :all]
+  (:require [clj-spotify.core :as spotify]
+            [clj-spotify.util :as spotify-utils]
             [clj-http.client :as http]))
 
 (defn paginate [accum page-obj acc-tok]
@@ -10,11 +10,11 @@
     (if (nil? next-page)
       accum
       (let [resp (http/get next-page {:oauth-token acc-tok
-                                      :as :json})]
+                                      :as          :json})]
         (paginate accum (:body resp) acc-tok)))))
 
 (defn get-library [acc-tok]
-  (let [page-obj    (get-users-saved-tracks {:limit 50} acc-tok)
+  (let [page-obj    (spotify/get-users-saved-tracks {:limit 50} acc-tok)
         track-objs  (map #(:track %1) (paginate [] page-obj acc-tok))
         pop-sorted  (sort-by #(:popularity %1) > track-objs)
         track-names (map #(:name %1) pop-sorted)]
@@ -42,7 +42,7 @@
 ;   (def auth-tok
 ;     (let [client-id     (slurp "debug/client_id")
 ;           client-secret (slurp "debug/secret")]
-;       (get-access-token client-id client-secret)))
+;       (spotify-utils/get-access-token client-id client-secret)))
 ;   (with-open [rdr (clojure.java.io/reader "debug/fav_songs")]
 ;     (->> (line-seq rdr)
 ;       (map (fn [track-id] (get-track-label track-id auth-tok)))

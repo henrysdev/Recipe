@@ -1,8 +1,7 @@
 (ns recipe.authorization
   (:gen-class)
   (:require [clj-http.util :as http-util]
-            [clj-http.client :as http]
-            [recipe.user :as user]))
+            [clj-http.client :as http]))
 
 ;; Constants
 (def csrf-token (apply str (take 16 (repeatedly #(char (+ (rand 26) 65))))))
