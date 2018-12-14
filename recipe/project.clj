@@ -5,7 +5,11 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [clj-spotify "0.1.8"]]
+                 [clj-spotify "0.1.8"]
+                 [http-kit "2.3.0"]
+                 [clj-http "3.9.1"]
+                 [slingshot "0.12.2"]
+                 [compojure "1.6.1"]]
   
   :main ^:skip-aot recipe.core
   :target-path "target/%s"
