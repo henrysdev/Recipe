@@ -1,10 +1,12 @@
--- :name users-all
--- :command :query
--- :result n
--- :doc select all users with all attributes
-SELECT * FROM users
-
 -- :name user-login :! :n
 -- :doc insert new user
-INSERT INTO users (id, refresh)
-VALUES (:id, :refresh)
+INSERT INTO users (user_id, 
+                   email, 
+                   display_name, 
+                   href, 
+                   refresh_token)
+VALUES (:user_id, 
+        :email, 
+        :display_name, 
+        :href, 
+        :refresh_token)

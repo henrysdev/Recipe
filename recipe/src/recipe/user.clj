@@ -4,7 +4,7 @@
             [clj-spotify.util :as spotify-utils]
             [clj-http.client :as http]
             [recipe.authorization :as auth]
-            [recipe.database :as db]))
+            [recipe.persistence :as persist]))
 
 (defn paginate [accum page-obj acc-tok]
   (let [accum     (concat accum (:items page-obj))
@@ -27,9 +27,15 @@
         user-id  (:id prof-obj)]
         user-id))
 
-(defn process [user]
-  (def acc-tok (:access user))
-  (def ref-tok (:refresh user))
-  (db/user-login (get-user-id acc-tok) ref-tok)
-  ;(println (auth/refresh-tokens ref-tok))
-  (get-library acc-tok))
+(defn process [tokens]
+  (def access-token (:access tokens))
+  
+  (let [prof-obj (spotify/get-current-users-profile {} access-token)
+        user {:user_id       (:id prof-obj)
+              :email         (:email prof-obj)
+              :display_name  (:display_name prof-obj)
+              :href          (:href prof-obj)
+              :refresh_token (:refresh tokens)}]
+        (persist/user-login user))
+
+  (get-library access-token))
