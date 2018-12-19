@@ -23,7 +23,7 @@
   (GET "/" [] (resp/file-response "index.html" {:root "public"}))
   (GET "/login" [] (resp/redirect (auth/authorize-uri)))
   (GET "/callback" [] callback-handler)
-  (route/not-found "You Must Be New Here"))
+  (route/not-found (resp/file-response "index.html" {:root "public"})))
 
 (defn -main
   "This is our app's entry point"
