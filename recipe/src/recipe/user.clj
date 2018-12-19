@@ -7,8 +7,6 @@
             [recipe.persistence :as persist]
             [recipe.utils :as utils]))
 
-
-
 (defn login [tokens]
   (def access-token (:access tokens))
   (let [prof-obj (spotify/get-current-users-profile {} access-token)

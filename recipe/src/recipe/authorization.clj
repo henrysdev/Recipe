@@ -3,7 +3,6 @@
   (:require [clj-http.util :as http-util]
             [clj-http.client :as http]))
 
-;; Constants
 (def csrf-token (apply str (take 16 (repeatedly #(char (+ (rand 26) 65))))))
 
 (def oauth2-params
@@ -13,7 +12,6 @@
    :redirect-uri (System/getenv "MY_REDIRECT_URI")
    :access-token-uri "https://accounts.spotify.com/api/token"
    :scope (slurp "debug/scopes")})
-
 
 (defn authorize-uri []
   (str
