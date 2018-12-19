@@ -12,7 +12,8 @@
 (defn callback-handler [req]
   (let [response-params (walk/keywordize-keys (codec/form-decode (:query-string req)))
         tokens          (auth/get-authentication-response response-params)
-        resp-body       (user/process {:access (:access_token tokens) :refresh (:refresh_token tokens)})
+        resp-body       (user/login {:access (:access_token tokens) 
+                                     :refresh (:refresh_token tokens)})
         response        {:status 200
                          :headers {"Content-Type" "text/html"}
                          :body resp-body}]

@@ -22,14 +22,8 @@
         track-names (map #(:name %1) pop-sorted)]
     track-names))
 
-(defn- get-user-id [acc-tok]
-  (let [prof-obj (spotify/get-current-users-profile {} acc-tok)
-        user-id  (:id prof-obj)]
-        user-id))
-
-(defn process [tokens]
+(defn login [tokens]
   (def access-token (:access tokens))
-  
   (let [prof-obj (spotify/get-current-users-profile {} access-token)
         user {:user_id       (:id prof-obj)
               :email         (:email prof-obj)
@@ -37,5 +31,4 @@
               :href          (:href prof-obj)
               :refresh_token (:refresh tokens)}]
         (persist/user-login user))
-
   (get-library access-token))
