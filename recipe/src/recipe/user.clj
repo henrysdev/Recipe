@@ -2,7 +2,9 @@
   (:gen-class)
   (:require [clj-spotify.core :as spotify]
             [clj-spotify.util :as spotify-utils]
-            [clj-http.client :as http]))
+            [clj-http.client :as http]
+            [recipe.authorization :as auth]
+            [recipe.database :as db]))
 
 (defn paginate [accum page-obj acc-tok]
   (let [accum     (concat accum (:items page-obj))
@@ -20,31 +22,14 @@
         track-names (map #(:name %1) pop-sorted)]
     track-names))
 
+(defn- get-user-id [acc-tok]
+  (let [prof-obj (spotify/get-current-users-profile {} acc-tok)
+        user-id  (:id prof-obj)]
+        user-id))
+
 (defn process [user]
   (def acc-tok (:access user))
   (def ref-tok (:refresh user))
+  (db/user-login (get-user-id acc-tok) ref-tok)
+  ;(println (auth/refresh-tokens ref-tok))
   (get-library acc-tok))
-
-; (defn get-track-label [track-id auth-tok]
-;   (let [track (get-a-track  {:id track-id} auth-tok)
-;         album (get-an-album {:id (:id (:album track))} auth-tok)]
-;         (:label album)))
-
-
-; (defn -main [& args]
-;   (def auth-tok      (slurp "debug/temp_auth_tok"))
-;   (def client-id     (slurp "debug/client_id"))
-;   (def client-secret (slurp "debug/secret"))
-;   (println (get-users-saved-tracks {:limit 50} auth-tok)))
-
-
-; (defn -main [& args]
-;   (def auth-tok
-;     (let [client-id     (slurp "debug/client_id")
-;           client-secret (slurp "debug/secret")]
-;       (spotify-utils/get-access-token client-id client-secret)))
-;   (with-open [rdr (clojure.java.io/reader "debug/fav_songs")]
-;     (->> (line-seq rdr)
-;       (map (fn [track-id] (get-track-label track-id auth-tok)))
-;       (sort)
-;       (println))))
