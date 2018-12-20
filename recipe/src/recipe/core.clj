@@ -9,7 +9,7 @@
             [recipe.user :as user]
             [recipe.authorization :as auth]))
 
-(defn callback-handler [req]
+(defn- callback-handler [req]
   (let [response-params (walk/keywordize-keys (codec/form-decode (:query-string req)))
         tokens          (auth/get-authentication-response response-params)
         resp-body       (user/login {:access (:access_token tokens) 
