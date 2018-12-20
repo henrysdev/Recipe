@@ -1,4 +1,4 @@
-(ns recipe.db)
+(ns recipe.database.db)
 
 (def db {:classname "org.postgresql.Driver"
          :subprotocol "postgresql"

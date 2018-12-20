@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [clj-spotify.core :as spotify]
             [clj-spotify.util :as spotify-utils]
-            [recipe.persistence :as persist]
+            [recipe.database :as database]
             [recipe.utils :as utils]))
 
 (defn login [tokens]
@@ -13,6 +13,6 @@
                   :display_name  (:display_name prof-obj)
                   :href          (:href prof-obj)
                   :refresh_token (:refresh tokens)}]
-        (persist/user-login user))
-  ;(utils/unpage spotify/get-users-saved-tracks {:limit 50} access-token)
+        (database/user-login user))
+  ;(utils/paginate spotify/get-users-saved-tracks {:limit 50} access-token)
   (slurp "public/menu.html"))
