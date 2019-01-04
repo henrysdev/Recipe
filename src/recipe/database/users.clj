@@ -1,4 +1,4 @@
-(ns recipe.database.sql
+(ns recipe.database.users
   (:gen-class)
   (:require [hugsql.core :as hugsql]))
 
