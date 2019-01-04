@@ -1,10 +1,9 @@
-(ns recipe.pl-generation
+(ns recipe.pl-generation.algorithms
   (:gen-class)
   (:require [clj-spotify.core :as spotify]
             [clj-spotify.util :as spotify-utils]
             [recipe.database :as database]
             [recipe.utils :as utils]))
-
 
 (defn shared-tracks [leader-id group-id]
   (let member-ids (get-group group-id)
