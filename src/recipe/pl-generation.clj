@@ -10,4 +10,7 @@
   (let member-ids (get-group group-id)
        save-lists (map get-saved-tracks member-ids)
        save-sets  (map set save-lists)
-       (seq (clojure.set/intersection save-sets))))
+       ; workaround for being unable to figure out passing
+       ; a collection of sets to a function that expects a 
+       ; variable number of arguments... how to unpack?
+       (reduce #(clojure.set/intersection save-sets))))
