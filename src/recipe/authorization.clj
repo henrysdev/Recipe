@@ -1,9 +1,10 @@
 (ns recipe.authorization
   (:gen-class)
   (:require [clj-http.util :as http-util]
-            [clj-http.client :as http]))
+            [clj-http.client :as http]
+            [recipe.utils :as utils]))
 
-(def csrf-token (apply str (take 16 (repeatedly #(char (+ (rand 26) 65))))))
+(def csrf-token (utils/rand-str 16))
 
 (def oauth2-params
   {:client-id (System/getenv "MY_CLIENT_ID")

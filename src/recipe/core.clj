@@ -12,11 +12,12 @@
 (defn- callback-handler [req]
   (let [response-params (walk/keywordize-keys (codec/form-decode (:query-string req)))
         tokens          (auth/get-authentication-response response-params)
-        resp-body       (user/login {:access (:access_token tokens) 
+        cookies         (user/login {:access (:access_token tokens) 
                                      :refresh (:refresh_token tokens)})
         response        {:status 200
-                         :headers {"Content-Type" "text/html"}
-                         :body resp-body}]
+                         :headers {"Content-Type" "text/html"
+                                   "Set-Cookie"   (str "session_id=" (:session_id cookies))}
+                         :body (slurp "public/menu.html")}]
     response))
 
 (defroutes app-routes

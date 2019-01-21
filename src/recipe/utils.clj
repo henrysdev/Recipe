@@ -15,3 +15,6 @@
   (let [page-obj   (api-fn params access-token)
         aggregated (paginate [] page-obj access-token)]
         aggregated))
+
+(defn rand-str [len]
+  (apply str (take len (repeatedly #(char (+ (rand 57) 65))))))

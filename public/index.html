@@ -1,11 +1,39 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Recipe</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan|Jua" rel="stylesheet">
     <style type="text/css">
-      #login, #loggedin {
+      #login {
         display: none;
+        margin: auto;
+        width: 50%;
+        text-align: center;
+        padding: 10px;
+      }      
+      #loggedin {
+        display: none;
+      }
+      #btn-wrapper {
+        width: 100%;
+        /*height: 400px;*/
+        display: flex;
+        align-items: center;
+        font-family: 'Baloo Bhaijaan', cursive;
+        font-size: 30px;
+        justify-content: center;
+      }
+      .btn-label {
+        font-family: 'Baloo Bhaijaan', cursive;
+        font-size: 30px;
+        font-style: bold;
+      }
+      .banner {
+        margin: auto;
+        width: 50%;
+        text-align: center;
+        padding: 10px;
       }
       .text-overflow {
         overflow: hidden;
@@ -13,13 +41,51 @@
         white-space: nowrap;
         width: 500px;
       }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f7786f;
+        color: white;
+        text-align: center;
+      }
+      .btn-primary {
+        width: 200px;
+        border-radius: 20px;
+        background: #1db954;
+        border: 0px;
+
+        /* border-color: black; */
+      }
+      .btn-primary:hover {
+        background: black;
+      }
+      body {
+        background: #f7786f;
+      }
+      h1 {
+        font-family: 'Baloo Bhaijaan', cursive;
+        font-size: 1000%;
+      }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
     </style>
   </head>
   <body>
+    <div class="banner">
+        <h1>Recipe</h1>
+    </div>
     <div class="container">
       <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+        <div id="btn-wrapper">
+          <b>connect with</b>&nbsp;&nbsp;
+          <a href="/login" class="btn btn-primary btn-label">
+            <img src="https://s3.amazonaws.com/recipe-spotify/imgs/Spotify_Logo_RGB_White.png" />
+          </a>
+        </div>
       </div>
       <div id="loggedin">
         <div id="user-profile">
@@ -28,6 +94,9 @@
         </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
+    </div>
+    <div class="footer">
+      <p>created by Henry Warren</p>
     </div>
     <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>Logged in as {{display_name}}</h1>
